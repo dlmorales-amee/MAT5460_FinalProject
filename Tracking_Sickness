@@ -1,0 +1,78 @@
+% Diana Morales and Nicole Rasovsky
+% MAT 5460 Final Project
+% Professor Jennifer Switkes
+
+%Time Steps
+weeks = 15;
+
+%Setting Up History Vectors
+person1_history_sick = 0; 
+person2_history_sick = 0; 
+
+%Collect data
+p1_data = zeros([weeks,1]); 
+p2_data = zeros([weeks,1]);
+x_data = zeros([weeks,1]);
+
+ 
+for i = 1:weeks
+    x = rand;
+    if (x<0.30) 
+         if person2_history_sick == 2 && person1_history_sick < 2
+             person2_history_sick = 0;
+             person1_history_sick = person1_history_sick+1;
+         elseif person1_history_sick == 2 && person2_history_sick < 2
+             person1_history_sick = 0;
+             person2_history_sick = person2_history_sick+1;
+         elseif person1_history_sick < 2 && person2_history_sick < 2
+            if (person1_history_sick == 1  || person2_history_sick == 1)
+                person1_history_sick = person1_history_sick+1;
+                person2_history_sick = person2_history_sick+1;
+            elseif person1_history_sick == 0 && person2_history_sick == 0
+                person1_history_sick = person1_history_sick+1;
+            end
+         elseif person2_history_sick == 2 && person1_history_sick == 2
+             person1_history_sick = 0; 
+             person2_history_sick = 0; 
+         end
+    
+    elseif (x>0.30) 
+        if  person1_history_sick > 0 && person2_history_sick > 0   
+            if person1_history_sick == 1 && person2_history_sick == 1
+                person1_history_sick = person1_history_sick+1;
+                person2_history_sick = person2_history_sick+1;
+            elseif person1_history_sick == 1 && person2_history_sick == 2
+                person1_history_sick = person1_history_sick+1;
+                person2_history_sick = 0;
+            elseif person1_history_sick == 2 && person2_history_sick == 1
+                person1_history_sick = 0;
+                person2_history_sick = person2_history_sick+1;
+            elseif person1_history_sick == 2 && person2_history_sick == 2
+                person1_history_sick = 0;
+                person2_history_sick = 0;
+            end
+        elseif person1_history_sick > 0 
+            if person1_history_sick == 2
+                person1_history_sick = 0;
+            else 
+                person1_history_sick = person1_history_sick+1;
+            end
+        elseif person2_history_sick > 0
+            if person2_history_sick == 2
+                person2_history_sick = 0;
+            else 
+                person2_history_sick = person2_history_sick+1;
+            end
+        else 
+            person1_history_sick = person1_history_sick;
+            person2_history_sick = person2_history_sick;
+        end
+    end 
+   p1_data(i) = person1_history_sick;  
+   p2_data(i) = person2_history_sick;
+   x_data(i) = x;    
+end
+
+results = table(x_data,p1_data,p2_data)
+
+
